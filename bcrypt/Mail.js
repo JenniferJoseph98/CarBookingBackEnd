@@ -11,7 +11,7 @@ const emailSender = (content, subject, user) => {
     },
   });
   let mailOptions = {
-    from: "honeyjen1607@gmail.com",
+    from: process.env.adminEmail,
     to: user,
     subject: subject,
     text: content,
