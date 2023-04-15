@@ -1,0 +1,24 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+mongoose.set("strictQuery", false);
+mongoose.connect(process.env.DB_URL, () => console.log("Mongoose Connected"));
+const app = express();
+const bodyParser = require("body-parser");
+const stateRoutes = require("./routes/StateRoutes");
+const carRoutes = require("./routes/carRoutes");
+const authRoutes = require("./routes/userRoutes");
+const { tokenValidator } = require("./bcrypt/token");
+const bookRoutes = require("./routes/bookRoutes");
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors());
+app.use("/users", authRoutes);
+app.use("/book", bookRoutes);
+app.use("/state", tokenValidator, stateRoutes);
+app.use("/car", tokenValidator, carRoutes);
+app.get("/", async (req, res) => {
+  res.send("Hi");
+});
+app.listen(8000, () => console.log("Server connected"));
