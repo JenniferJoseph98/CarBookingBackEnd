@@ -10,7 +10,7 @@ authRoutes.post("/signup", async (req, res) => {
     if (existingUser != null || !existingUser) {
       const hashPass = await hashGenerate(req.body.password);
       const user = await User.create({
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         password: hashPass,
       });
       let mailContent = `
